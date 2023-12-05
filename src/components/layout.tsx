@@ -15,7 +15,7 @@ const Layout = (props: Readonly<Props>) => {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="w-full h-screen bg-white dark:bg-black font-roboto flex flex-col overflow-auto">
         <Navbar />
-        <div className="container grow mx-auto py-4 px-8 flex flex-col">
+        <div className="grow mx-auto py-4 flex flex-col">
           {children}
           <div className="container h-32 md:h-52"></div>
         </div>
