@@ -28,7 +28,7 @@ export const editPosting = async (body: PostingSchema, id: string) => {
     console.log("id", id);
     console.log('formdata', formData)
     const response = await axiosWithConfig.put(
-      `http://3.25.229.75:8000/posting/${id}`,
+      `/posting/${id}`,
       formData,
       {
         headers: {
@@ -54,7 +54,7 @@ export const postPosting = async (body: PostingSchema) => {
     }
     console.log('formdataposting', formData)
     const response = await axiosWithConfig.post(
-      "http://3.25.229.75:8000/posting",
+      "/posting",
       formData,
       {
         headers: {
@@ -72,7 +72,7 @@ export const postPosting = async (body: PostingSchema) => {
 export const deletePosting = async (id: string) => {
   try {
     const response = await axiosWithConfig.delete(
-      `http://3.25.229.75:8000/posting/${id}`
+      `/posting/${id}`
     );
 
     return response.data as Response;
