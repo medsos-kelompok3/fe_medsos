@@ -1,18 +1,53 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Write from "@/assets/write.svg";
+import { Textarea } from "./ui/textarea";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form } from "@/components/ui/form";
+import { PostingSchema, postingSchema } from "@/utils/apis/posting";
+import { CustomFormField } from "./custom-formfield";
+import { postPosting } from "@/utils/apis/posting/api";
+import { useToast } from "./ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 export function DialogPosting() {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const form = useForm<PostingSchema>({
+    resolver: zodResolver(postingSchema),
+    defaultValues: {
+      caption: "",
+      gambar_posting: "",
+    },
+  });
+
+  async function handleCreatePost(body: PostingSchema) {
+    try {
+      const result = await postPosting(body);
+      toast({
+        description: result.message,
+      });
+      navigate("/");
+    } catch (error: any) {
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
+    }
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -24,34 +59,45 @@ export function DialogPosting() {
         <DialogHeader>
           <DialogTitle>Create a new post</DialogTitle>
           <DialogDescription>
-            Make your post here. Click save when you're done.
+            <Form {...form}>
+              <form
+                className="flex flex-col gap-2"
+                onSubmit={form.handleSubmit(handleCreatePost)}>
+                <CustomFormField
+                  control={form.control}
+                  name="caption"
+                  label="Caption">
+                  {(field) => (
+                    <Textarea
+                      {...field}
+                      placeholder="What is happening?"
+                      disabled={form.formState.isSubmitted}
+                      aria-disabled={form.formState.isSubmitted}
+                    />
+                  )}
+                </CustomFormField>
+                <CustomFormField
+                  control={form.control}
+                  name="gambar_posting"
+                  label="Image">
+                  {(field) => (
+                    <Input
+                      {...field}
+                      placeholder="Choose File"
+                      type="file"
+                      name="image"
+                      disabled={form.formState.isSubmitted}
+                      aria-disabled={form.formState.isSubmitted}
+                    />
+                  )}
+                </CustomFormField>
+                <Button type="submit" className="mt-3">
+                  Submit
+                </Button>
+              </form>
+            </Form>
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

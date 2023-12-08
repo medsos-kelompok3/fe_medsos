@@ -41,7 +41,7 @@ export function CustomFormField<T extends FieldValues>(
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className="flex justify-start items-start">{label}</FormLabel>
           <FormControl>{children(field)}</FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />

@@ -11,10 +11,13 @@ import {
 
 import axiosWithConfig, { setAxiosConfig } from "@/utils/apis/axiosWithConfig";
 
-
 interface Context {
   token: string;
   changeToken: (token?: string) => void;
+  id: string;
+  changeIdUser: (user_id?: string) => void;
+  username: string;
+  changeUsername: (username?: string) => void;
 }
 
 interface Props {
@@ -24,13 +27,20 @@ interface Props {
 const contextValue = {
   token: "",
   changeToken: () => {},
+  id: "",
+  changeIdUser: () => {},
+  username: "",
+  changeUsername: () => {},
 };
 
 const TokenContext = createContext<Context>(contextValue);
 
 export function TokenProvider({ children }: Readonly<Props>) {
- 
   const [token, setToken] = useState(localStorage.getItem("token") ?? "");
+  const [id, setIdUser] = useState(localStorage.getItem("id") ?? "");
+  const [username, setUsername] = useState(
+    localStorage.getItem("username") ?? ""
+  );
 
   useEffect(() => {
     setAxiosConfig(token);
@@ -47,7 +57,6 @@ export function TokenProvider({ children }: Readonly<Props>) {
     }
   );
 
-
   const changeToken = useCallback(
     (token?: string) => {
       const newToken = token ?? "";
@@ -61,12 +70,42 @@ export function TokenProvider({ children }: Readonly<Props>) {
     [token]
   );
 
+  const changeIdUser = useCallback(
+    (id?: string) => {
+      const newIdUser = id ?? "";
+      setIdUser(newIdUser);
+      if (id) {
+        localStorage.setItem("id", JSON.stringify(newIdUser));
+      } else {
+        localStorage.removeItem("id");
+      }
+    },
+    [id]
+  );
+
+  const changeUsername = useCallback(
+    (username?: string) => {
+      const newUser = username ?? "";
+      setUsername(newUser);
+      if (username) {
+        localStorage.setItem("username", JSON.stringify(newUser));
+      } else {
+        localStorage.removeItem("username");
+      }
+    },
+    [username]
+  );
+
   const tokenContextValue = useMemo(
     () => ({
       token,
+      id,
+      username,
       changeToken,
+      changeIdUser,
+      changeUsername,
     }),
-    [token, changeToken]
+    [token, id, username, changeUsername, changeToken, changeIdUser]
   );
 
   return (

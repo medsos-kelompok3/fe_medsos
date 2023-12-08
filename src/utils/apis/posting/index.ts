@@ -1,3 +1,5 @@
-import { Posting } from "./types";
+import { Posting, postingSchema, PostingSchema, Detail } from "./types";
+import { getPosting, editPosting, deletePosting } from "./api";
 
-export type { Posting };
+export { postingSchema, getPosting, editPosting, deletePosting };
+export type { Posting, PostingSchema, Detail };

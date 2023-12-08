@@ -15,7 +15,7 @@ import Logo from "@/assets/logocircle2.svg";
 import { useToken } from "@/utils/context/token";
 
 const login = () => {
-  const { changeToken } = useToken();
+  const { changeToken, changeIdUser, changeUsername } = useToken();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -30,10 +30,13 @@ const login = () => {
   async function onSubmitLogin(data: LoginSchema) {
     try {
       const result = await loginAccount(data);
-      console.log("result", result);
+      changeIdUser(result.id);
       changeToken(result.token);
+      changeUsername(result.username)
+      console.log('username', result.username)
+      console.log('tokenres', result.token)
       toast({
-        description: "Succesfully login",
+        description: 'Succesfully login',
       });
       navigate("/");
     } catch (error: any) {
@@ -47,7 +50,7 @@ const login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-white dark:bg-black">
-      <div className="relative flex flex-col m-6 space-y-8 bg-white dark:bg-black dark:text-white md:shadow-2xl  rounded-2xl md:flex-row md:space-y-0">
+      <div className="relative flex flex-col m-6 space-y-8 bg-white dark:bg-black dark:border-slate-800 dark:border-2 dark:text-white md:shadow-2xl  rounded-2xl md:flex-row md:space-y-0">
         <div className="flex flex-col justify-center items-center p-8 md:p-14">
           <img src={Logo} alt="Logo" className="w-[125px] pb-14" />
           <Form {...form}>
@@ -81,7 +84,7 @@ const login = () => {
                 )}
               </CustomFormField>
               <Button
-                className="w-[300px] my-3 bg-bluecircle"
+                className="w-[300px] my-3 bg-bluecircle hover:bg-bluecircle/90"
                 type="submit"
                 disabled={form.formState.isSubmitted}
                 aria-disabled={form.formState.isSubmitted}>

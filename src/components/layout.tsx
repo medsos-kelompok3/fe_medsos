@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
+
 interface Props {
   children: ReactNode;
 }
@@ -13,7 +14,7 @@ const Layout = (props: Readonly<Props>) => {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="w-full h-screen bg-white dark:bg-black font-roboto flex flex-col overflow-auto">
+      <div className="w-full h-screen bg-white dark:bg-black font-roboto flex flex-col overflow-auto lg:hidden">
         <Navbar />
         <div className="grow mx-auto py-4 flex flex-col">
           {children}

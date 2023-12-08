@@ -14,11 +14,12 @@ import { useToken } from "@/utils/context/token";
 import { useToast } from "./ui/use-toast";
 
 const Footer = () => {
-  const { token, changeToken } = useToken();
+  const { token, changeToken, changeIdUser } = useToken();
   const { toast } = useToast();
 
   function handleLogout() {
     changeToken();
+    changeIdUser();
     toast({
       description: "Logout Successfully",
     });
@@ -47,7 +48,7 @@ const Footer = () => {
                 <DropdownMenuLabel>Welcome</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {token ? (
-                  <Link to="/my-profile">
+                  <Link to="/user/1/profile">
                     <DropdownMenuItem>Profile</DropdownMenuItem>
                   </Link>
                 ) : (
@@ -79,8 +80,8 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-      <footer className="w-full min-h-[20vh] bg-white dark:bg-black items-center hidden lg:block">
-        <div className="container p-6 h-full">
+      <footer className="w-full min-h-[20vh] bg-white dark:bg-black hidden lg:block">
+        <div className="container flex justify-center items-center p-6 h-full mt-10">
           <p>Copyright &copy;2023 Circle. All Rights Reserved</p>
         </div>
       </footer>
